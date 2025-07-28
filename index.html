@@ -3,113 +3,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RSVP - BYH Squid Game Night</title>
+  <title>BYH RSVP: Squid Game Theme</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'SquidGame';
+      src: url('GameOfSquids.ttf') format('truetype');
+    }
+
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Orbitron', sans-serif;
-      background-color: #111;
-      color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-image: url('squid-game-bg.jpg'); /* You can replace with your own */
-      background-size: cover;
-      background-position: center;
-    }
-    .container {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 2rem;
-      border-radius: 1rem;
-      text-align: center;
-      box-shadow: 0 0 20px #ff007f;
-    }
-    input {
-      margin: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 0.3rem;
-      border: none;
-      width: 80%;
-    }
-    button {
-      margin: 1rem;
-      padding: 0.7rem 2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      background-color: #ff007f;
+      font-family: 'SquidGame', sans-serif;
+      background-color: black;
       color: white;
-      transition: 0.3s;
+      text-align: center;
     }
-    button:hover {
-      background-color: #e60073;
+
+    .container {
+      padding: 2rem;
     }
-    #response {
-      margin-top: 1rem;
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    label, input {
       font-size: 1.2rem;
     }
-    #no-img {
-      display: none;
-      max-width: 100%;
-      border-radius: 1rem;
+
+    input {
+      padding: 0.5rem;
+      margin: 0.5rem;
+      width: 250px;
     }
-    audio {
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      font-size: 1.1rem;
+      margin: 1rem;
+      cursor: pointer;
+      background-color: white;
+      color: black;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: red;
+      color: white;
+    }
+
+    #no-response {
       display: none;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+
+    #yes-response {
+      display: none;
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    #bg-audio {
+      display: none;
+    }
+
+    .fade-in {
+      display: block;
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="squid-theme.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <audio id="bg-audio" src="squid-theme.mp3" autoplay loop></audio>
 
-  <div class="container" id="formContainer">
-    <h1>RSVP: BYH Squid Game Night</h1>
-    <p>Will you play?</p>
-    <form id="rsvpForm">
-      <input type="text" id="name" name="name" placeholder="Your Name" required><br>
-      <input type="email" id="email" name="email" placeholder="Your Gmail" required><br>
-      <button type="button" onclick="submitForm(true)">Yes</button>
-      <button type="button" onclick="submitForm(false)">No</button>
+  <div class="container">
+    <h1>It's Time to Play</h1>
+    <form id="rsvp-form">
+      <label for="name">Name:</label><br />
+      <input type="text" id="name" name="name" required /><br />
+      <label for="email">Gmail:</label><br />
+      <input type="email" id="email" name="email" required /><br />
+
+      <div>
+        <button type="button" class="btn" onclick="submitForm('yes')">Yes</button>
+        <button type="button" class="btn" onclick="submitForm('no')">No</button>
+      </div>
     </form>
-    <div id="response"></div>
+
+    <div id="yes-response">
+      <p>📍 1st August at 6 PM</p>
+      <p>30 Gordon Street, Allston, MA 02134</p>
+    </div>
+
+    <div id="no-response">
+      <h2 style="margin-top: 2rem;">Goodbye!</h2>
+      <img src="NO bg.png" alt="Goodbye" style="width: 100%; max-width: 500px; margin-top: 1rem;" />
+    </div>
   </div>
-  <img id="no-img" src="NO bg.png" alt="Game Over" /> <!-- Upload your image to GitHub and link here -->
 
   <script>
-    function submitForm(isAttending) {
+    function submitForm(response) {
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
-      const responseDiv = document.getElementById('response');
 
       if (!name || !email) {
-        responseDiv.textContent = "Please fill out all fields.";
+        alert("Please fill out both fields.");
         return;
       }
 
-      fetch("https://script.google.com/macros/s/AKfycbz8v4eREBasEd0zO2aEWU9rx40r5yfayByl38nqA-0vfmPcf95WjUrgoFK448kPHd-T/exec", { // Use Sheetmonkey or Google Sheets API
+      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, attending: isAttending ? "Yes" : "No" })
+        mode: "no-cors",
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&rsvp=${response}`
       });
 
-      if (isAttending) {
-        responseDiv.innerHTML =
-          "<strong>Great! See you there!</strong><br>📍 30 Gordon Street, Allston, MA<br>🗓️ 1st August | 6PM";
+      document.getElementById('rsvp-form').style.display = 'none';
+      if (response === 'yes') {
+        document.getElementById('yes-response').style.display = 'block';
       } else {
-        document.body.style.background = "black";
-        document.getElementById('formContainer').style.display = "none";
-        document.getElementById('no-img').style.display = "block";
+        document.body.style.backgroundColor = 'black';
+        const noResp = document.getElementById('no-response');
+        noResp.classList.add('fade-in');
       }
     }
   </script>
