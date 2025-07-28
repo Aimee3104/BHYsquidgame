@@ -38,3 +38,14 @@ button {
   background-color: #e74c3c;
   color: white;
 }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#logo {
+  font-size: 5em;
+  animation: pulse 1.5s infinite;
+}
