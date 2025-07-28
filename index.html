@@ -105,6 +105,11 @@
     #bg-audio {
       display: none;
     }
+
+    iframe {
+      margin-top: 1rem;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
@@ -120,7 +125,7 @@
 
   <!-- Main container -->
   <div class="container" id="main-container">
-    <h1>You have been invited!</h1>
+    <h1 id="main-heading">You have been invited!</h1>
     <form id="rsvp-form">
       <label for="name">Name:</label><br />
       <input type="text" id="name" name="name" required /><br />
@@ -134,8 +139,19 @@
     </form>
 
     <div id="yes-response">
-      <p> See you there on 1st August at 6 PM</p>
-      <p>30 Gordon Street, Allston, MA 02134</p>
+      <p>📅 1st August at 6 PM</p>
+      <p>📍 30 Gordon Street, Allston, MA 02134</p>
+      <div>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2949.4400091909365!2d-71.1379076845449!3d42.35360937918698!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e379b10f165a1d%3A0x27c11a18707089e3!2s30%20Gordon%20St%2C%20Allston%2C%20MA%2002134!5e0!3m2!1sen!2sus!4v1691122334411!5m2!1sen!2sus"
+          width="100%"
+          height="250"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
     </div>
   </div>
 
@@ -165,6 +181,8 @@
       document.getElementById('rsvp-form').style.display = 'none';
 
       if (response === 'yes') {
+        // Change heading and show info
+        document.getElementById('main-heading').textContent = "See you there!";
         document.getElementById('yes-response').style.display = 'block';
       } else {
         // Fade to black, stop background video
@@ -175,7 +193,6 @@
         video.style.display = 'none';
 
         document.body.style.backgroundColor = 'black';
-
         document.getElementById('no-response').classList.add('fade-in');
       }
     }
