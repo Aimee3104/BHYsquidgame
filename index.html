@@ -1,25 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>BYH Game Night RSVP</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSVP - BYH Squid Game Night</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #111;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-image: url('squid-game-bg.jpg'); /* You can replace with your own */
+      background-size: cover;
+      background-position: center;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 0 20px #ff007f;
+    }
+    input {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.3rem;
+      border: none;
+      width: 80%;
+    }
+    button {
+      margin: 1rem;
+      padding: 0.7rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background-color: #ff007f;
+      color: white;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #e60073;
+    }
+    #response {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+    #no-img {
+      display: none;
+      max-width: 100%;
+      border-radius: 1rem;
+    }
+    audio {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <!-- Background music -->
   <audio autoplay loop>
     <source src="squid-theme.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <div id="container">
-    <h1>Are you ready to play?</h1>
-    <div class="buttons">
-      <button id="yesBtn">YES</button>
-      <button id="noBtn">NO</button>
-    </div>
+  <div class="container" id="formContainer">
+    <h1>RSVP: BYH Squid Game Night</h1>
+    <p>Will you play?</p>
+    <form id="rsvpForm">
+      <input type="text" id="name" name="name" placeholder="Your Name" required><br>
+      <input type="email" id="email" name="email" placeholder="Your Gmail" required><br>
+      <button type="button" onclick="submitForm(true)">Yes</button>
+      <button type="button" onclick="submitForm(false)">No</button>
+    </form>
+    <div id="response"></div>
   </div>
+  <img id="no-img" src="game-over.png" alt="Game Over" /> <!-- Upload your image to GitHub and link here -->
 
-  <script src="script.js"></script>
+  <script>
+    function submitForm(isAttending) {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const responseDiv = document.getElementById('response');
+
+      if (!name || !email) {
+        responseDiv.textContent = "Please fill out all fields.";
+        return;
+      }
+
+      fetch("https://api.sheetmonkey.io/form/YOUR-SHEETMONKEY-URL", { // Use Sheetmonkey or Google Sheets API
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, attending: isAttending ? "Yes" : "No" })
+      });
+
+      if (isAttending) {
+        responseDiv.innerHTML =
+          "<strong>Great! See you there!</strong><br>📍 30 Gordon Street, Allston, MA<br>🗓️ 1st August | 6PM";
+      } else {
+        document.body.style.background = "black";
+        document.getElementById('formContainer').style.display = "none";
+        document.getElementById('no-img').style.display = "block";
+      }
+    }
+  </script>
 </body>
 </html>
