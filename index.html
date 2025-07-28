@@ -23,6 +23,7 @@
       position: relative;
       min-height: 100vh;
       overflow: hidden;
+      background-color: black;
     }
 
     video.bg-video {
@@ -109,14 +110,15 @@
 <body>
 
   <!-- Background video -->
-  <video class="bg-video" autoplay muted loop>
+  <video class="bg-video" id="bg-video" autoplay muted loop>
     <source src="theme-bg.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
+  <!-- Background music -->
   <audio id="bg-audio" src="squid-theme.mp3" autoplay loop></audio>
 
-  <!-- Main content -->
+  <!-- Main container -->
   <div class="container" id="main-container">
     <h1>You have been invited!</h1>
     <form id="rsvp-form">
@@ -137,6 +139,7 @@
     </div>
   </div>
 
+  <!-- Goodbye image -->
   <div id="no-response">
     <img src="no-bg.png" alt="Goodbye" style="width: 100%; max-width: 500px; margin-top: 1rem;" />
   </div>
@@ -151,6 +154,7 @@
         return;
       }
 
+      // Send to Google Apps Script
       fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
         method: "POST",
         mode: "no-cors",
@@ -163,7 +167,15 @@
       if (response === 'yes') {
         document.getElementById('yes-response').style.display = 'block';
       } else {
+        // Fade to black, stop background video
         document.getElementById('main-container').style.display = 'none';
+
+        const video = document.getElementById('bg-video');
+        video.pause();
+        video.style.display = 'none';
+
+        document.body.style.backgroundColor = 'black';
+
         document.getElementById('no-response').classList.add('fade-in');
       }
     }
