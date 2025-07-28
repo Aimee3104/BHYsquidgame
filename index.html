@@ -1,35 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RSVP – BYH Game Night</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f9f2e7;
-      font-family: 'Orbitron', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
-    }
-    h1 {
-      color: #000;
-    }
-    iframe {
-      width: 100%;
-      max-width: 640px;
-      height: 800px;
-      border: none;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>BYH Game Night RSVP</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>RSVP – BYH Squid Game Night 🦑</h1>
-  <p>Fill out the form below to reserve your spot!</p>
-  
-  <!-- Replace with your actual Google Form embed URL -->
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdX.../viewform?embedded=true">Loading…</iframe>
+  <div id="container">
+    <h1>Are you ready to play?</h1>
+    <div class="buttons">
+      <button id="yesBtn">YES</button>
+      <button id="noBtn">NO</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
